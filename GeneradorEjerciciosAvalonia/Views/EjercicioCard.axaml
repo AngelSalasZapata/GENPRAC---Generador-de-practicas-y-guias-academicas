@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:GeneradorEjerciciosAvalonia.ViewModels"
+             x:Class="GeneradorEjerciciosAvalonia.Views.EjercicioCard"
+             x:DataType="vm:EjercicioCardViewModel">
+    <Border Width="252" Margin="8" Background="White" CornerRadius="12" Padding="12"
+            BorderBrush="#d0e6f5" BorderThickness="1">
+        <Grid RowDefinitions="150,Auto,Auto,Auto">
+            <Border Grid.Row="0" Background="#f8fafc" CornerRadius="8">
+                <Panel>
+                    <Image Source="{Binding Imagen}" Stretch="Uniform" Margin="4"/>
+                    <TextBlock Text="Cargando..." Foreground="#95a5a6"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               IsVisible="{Binding Cargando}"/>
+                </Panel>
+            </Border>
+
+            <TextBlock Grid.Row="1" Text="{Binding Nombre}" FontWeight="Bold"
+                       TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"
+                       Margin="0,10,0,0" MinHeight="36" Foreground="#0c4a6e"/>
+
+            <Border Grid.Row="2" Background="{Binding FondoDificultad}" CornerRadius="6"
+                    Padding="10,4" HorizontalAlignment="Left" Margin="0,8,0,0">
+                <TextBlock Text="{Binding Dificultad}" Foreground="{Binding ColorDificultad}" FontSize="12"/>
+            </Border>
+
+            <Grid Grid.Row="3" ColumnDefinitions="*,*" Margin="0,12,0,0">
+                <Button Classes="action-button" Grid.Column="0" Content="Ver" Margin="0,0,4,0" Height="34"
+                        Background="#0284c7" Foreground="White" CornerRadius="8"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                        Command="{Binding VerCommand}"/>
+                <Button Classes="action-button" Grid.Column="1" Content="Eliminar" Margin="4,0,0,0" Height="34"
+                        Background="#f43f5e" Foreground="White" CornerRadius="8"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                        Command="{Binding EliminarCommand}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

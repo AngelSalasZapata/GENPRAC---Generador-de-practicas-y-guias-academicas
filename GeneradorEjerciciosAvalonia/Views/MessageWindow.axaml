@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="GeneradorEjerciciosAvalonia.Views.MessageWindow"
+        Width="430" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="#ffffff">
+    <StackPanel Margin="24" Spacing="16">
+        <TextBlock x:Name="TituloText" FontSize="16" FontWeight="Bold" TextWrapping="Wrap"/>
+        <TextBlock x:Name="MensajeText" TextWrapping="Wrap" Foreground="#333333"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Classes="action-button" x:Name="CancelarBtn" Content="Cancelar" Click="Cancelar_Click"
+                    Background="#95a5a6" Foreground="White" Padding="18,8"/>
+            <Button Classes="action-button" x:Name="AceptarBtn" Content="Aceptar" Click="Aceptar_Click"
+                    Background="#2e86de" Foreground="White" Padding="18,8"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

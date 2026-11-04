@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="GeneradorEjerciciosAvalonia.Views.AgregarEjercicioWindow"
+        Title="Agregar Ejercicio" Width="460" Height="560" CanResize="False"
+        WindowStartupLocation="CenterOwner" Background="#f4f6f9">
+    <ScrollViewer>
+        <StackPanel Margin="24" Spacing="14">
+            <TextBlock Text="➕ Nuevo Ejercicio" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Nombre:" FontSize="13"/>
+            <TextBox x:Name="NombreBox" PlaceholderText="Ej: Suma de fracciones" Padding="10,8"/>
+
+            <TextBlock Text="Dificultad:" FontSize="13"/>
+            <ComboBox x:Name="ComboDificultad" HorizontalAlignment="Stretch"/>
+
+            <TextBlock Text="Imagen:" FontSize="13"/>
+            <Border Background="#ffffff" CornerRadius="8" Padding="10">
+                <StackPanel Spacing="10">
+                    <Border Height="170" Background="#f0f0f0" CornerRadius="6">
+                        <Panel>
+                            <TextBlock x:Name="SinImagen" Text="Ninguna imagen seleccionada"
+                                       Foreground="#95a5a6" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <Image x:Name="ImagenPreview" Stretch="Uniform" Margin="4"/>
+                        </Panel>
+                    </Border>
+                    <Button Classes="action-button" Content="📂 Seleccionar imagen" HorizontalAlignment="Stretch"
+                            Background="#2e86de" Foreground="White"
+                            Click="Seleccionar_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" Margin="0,10,0,0">
+                <Button Classes="action-button" Grid.Column="0" Content="Cancelar" Margin="0,0,6,0" Height="40"
+                        Background="#95a5a6" Foreground="White" Click="Cancelar_Click"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                <Button Classes="action-button" Grid.Column="1" Content="Guardar" Margin="6,0,0,0" Height="40"
+                        Background="#2e86de" Foreground="White" Click="Guardar_Click"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            </Grid>
+
+            <Button Classes="action-button" Content="✖ Cerrar" HorizontalAlignment="Right" Height="36"
+                    Background="#e74c3c" Foreground="White" Click="Cerrar_Click"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

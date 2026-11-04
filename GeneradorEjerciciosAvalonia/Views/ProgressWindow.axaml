@@ -1,0 +1,13 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="GeneradorEjerciciosAvalonia.Views.ProgressWindow"
+        Width="380" Height="150" CanResize="False"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="#ffffff">
+    <StackPanel Margin="24" Spacing="16" VerticalAlignment="Center">
+        <TextBlock x:Name="EstadoText" Text="Iniciando..." FontSize="13"
+                   TextWrapping="Wrap" HorizontalAlignment="Center"/>
+        <ProgressBar x:Name="Barra" Minimum="0" Maximum="1" Value="0" Height="8"
+                     Foreground="#2e86de"/>
+    </StackPanel>
+</Window>

@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:GeneradorEjerciciosAvalonia.ViewModels"
+             x:Class="GeneradorEjerciciosAvalonia.Views.GenerarView"
+             x:DataType="vm:GenerarViewModel"
+             IsVisible="{Binding EsVisible}">
+    <ScrollViewer>
+        <StackPanel Margin="40,30" HorizontalAlignment="Center" MaxWidth="640">
+            <Border Background="White" CornerRadius="12" Padding="0" Width="620">
+                <StackPanel>
+                    <TextBlock Text="Configuración de Ejercicios" FontSize="17" FontWeight="Bold"
+                               Margin="35,28,35,18"/>
+
+                    <Grid ColumnDefinitions="*,Auto,Auto" Margin="35,0">
+                        <TextBlock Grid.Column="0" Text="Básicos" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Width="70" Text="{Binding Basicos}"
+                                 HorizontalContentAlignment="Center"/>
+                        <StackPanel Grid.Column="2" Spacing="2" Margin="6,0,0,0">
+                            <Button Content="▲" Width="34" Height="24" Padding="0"
+                                    Command="{Binding IncrementarBasicosCommand}"/>
+                            <Button Content="▼" Width="34" Height="24" Padding="0"
+                                    Command="{Binding DecrementarBasicosCommand}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto,Auto" Margin="35,8,35,0">
+                        <TextBlock Grid.Column="0" Text="Intermedios" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Width="70" Text="{Binding Intermedios}"
+                                 HorizontalContentAlignment="Center"/>
+                        <StackPanel Grid.Column="2" Spacing="2" Margin="6,0,0,0">
+                            <Button Content="▲" Width="34" Height="24" Padding="0"
+                                    Command="{Binding IncrementarIntermediosCommand}"/>
+                            <Button Content="▼" Width="34" Height="24" Padding="0"
+                                    Command="{Binding DecrementarIntermediosCommand}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto,Auto" Margin="35,8,35,0">
+                        <TextBlock Grid.Column="0" Text="Difíciles" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Width="70" Text="{Binding Dificiles}"
+                                 HorizontalContentAlignment="Center"/>
+                        <StackPanel Grid.Column="2" Spacing="2" Margin="6,0,0,0">
+                            <Button Content="▲" Width="34" Height="24" Padding="0"
+                                    Command="{Binding IncrementarDificilesCommand}"/>
+                            <Button Content="▼" Width="34" Height="24" Padding="0"
+                                    Command="{Binding DecrementarDificilesCommand}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Height="1" Background="#e0e0e0" Margin="35,18,35,16"/>
+
+                    <TextBlock Text="Personalizar Documento" FontSize="17" FontWeight="Bold"
+                               Margin="35,0,35,14"/>
+
+                    <StackPanel Margin="35,0" Spacing="4">
+                        <TextBlock Text="Título:" FontSize="13"/>
+                        <TextBox Text="{Binding Titulo}" PlaceholderText="Ej: Examen de Matemáticas"/>
+                        <TextBlock Text="Autor:" FontSize="13" Margin="0,8,0,0"/>
+                        <TextBox Text="{Binding Autor}" PlaceholderText="Ej: Nombre del profesor"/>
+                        <TextBlock Text="Etiqueta de las imágenes:" FontSize="13" Margin="0,8,0,0"/>
+                        <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Etiquetas}"
+                                  SelectedItem="{Binding Etiqueta}"/>
+                    </StackPanel>
+
+                    <Border Height="1" Background="#e0e0e0" Margin="35,14,35,12"/>
+
+                    <TextBlock Text="Espacio en blanco entre ejercicios:" FontSize="13"
+                               Margin="35,0,35,6"/>
+                    <StackPanel Orientation="Horizontal" Margin="35,0" Spacing="12">
+                        <CheckBox Content="Agregar espacio" IsChecked="{Binding AgregarEspacio}"
+                                  VerticalAlignment="Center"/>
+                        <TextBox Width="80" Text="{Binding EspacioTexto}"
+                                 HorizontalContentAlignment="Center"
+                                 IsEnabled="{Binding AgregarEspacio}"/>
+                        <TextBlock Text="cm" VerticalAlignment="Center" FontSize="12"/>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding TotalTexto}" FontSize="15" FontWeight="Bold"
+                               Margin="35,24,35,6"/>
+
+                    <Button Classes="action-button" Content="🎲 Generar PDF Aleatorio" Height="50" CornerRadius="10"
+                            FontSize="15" FontWeight="Bold" Margin="35,10,35,30"
+                            Background="#10b981" Foreground="White"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Command="{Binding GenerarCommand}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

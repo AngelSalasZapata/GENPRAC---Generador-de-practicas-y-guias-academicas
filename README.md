@@ -1,109 +1,149 @@
 # Generador de Ejercicios PDF
 
-Aplicación de escritorio para Windows que gestiona un banco de **prácticas académicas** (matemáticas, letras, etc.) con imágenes y genera documentos PDF (exámenes/galerías) con prácticas **seleccionadas aleatoriamente** por nivel de dificultad.
+Aplicación de escritorio para Windows que gestiona un banco de **prácticas académicas** (matemáticas, letras, etc.) con imágenes y genera documentos PDF (exámenes/guías) con prácticas **seleccionadas aleatoriamente** por nivel de dificultad.
+
+> La versión principal es **Avalonia** (C#/.NET 8). La versión Python/CustomTkinter se conserva como referencia de mantenimiento.
+
+---
 
 ## ▶️ Cómo empezar (usuario final)
 
-1. **Copie la carpeta `dist/`** a la PC donde quiera usarla (escritorio, USB, red, etc.).
-2. **Doble clic en `GeneradorEjercicios.exe`** — se abre la ventana principal.
-3. **No necesita Python ni instalar nada.** Todo está incluido en el ejecutable.
+1. **Copie la carpeta `dist-avalonia/`** a la PC donde quiera usarla (escritorio, USB, red, etc.).
+2. **Doble clic en `GeneradorEjerciciosAvalonia.exe`** — se abre la ventana principal.
+3. **No necesita instalar nada.** El ejecutable es autocontenido (.NET self-contained).
 
-> ⚠️ **Primer arranque:** el ejecutable tarda unos segundos en iniciar (descomprime sus archivos internos). Es normal.
->
-> ⚠️ **Antivirus / SmartScreen:** al no estar firmado, Windows o el antivirus pueden mostrar una advertencia la primera vez → "Más información" → "Ejecutar de todas formas".
+> ⚠️ **Antivirus / SmartScreen:** al no estar firmado, Windows puede mostrar una advertencia la primera vez → "Más información" → "Ejecutar de todas formas".
 
-La base de datos `ejercicios.db` (los ejercicios del banco) se guarda **junto al .exe** y se crea automáticamente si no existe.
+La base de datos `ejercicios.db` se guarda **junto al `.exe`** y se crea automáticamente al primer arranque.
+
+---
 
 ## 🖥️ Pantalla principal
 
-La ventana tiene un **panel lateral** con 3 secciones:
+La ventana tiene un **panel lateral** con 2 secciones:
 
 | Sección | Para qué sirve |
 |---------|----------------|
-| 🎲 **Generar PDF** | Crear un documento con ejercicios aleatorios |
+| 🎲 **Generar PDF** | Crear un documento con ejercicios aleatorios por nivel |
 | 📚 **Banco de Ejercicios** | Ver, buscar, agregar y eliminar ejercicios |
-| 📊 **Estadísticas** | Cantidad de ejercicios por dificultad y estado del banco |
 
 ---
 
 ## 🎲 Sección 1 — Generar PDF
 
-1. Escriba cuántos ejercicios quiere de cada nivel: **Básicos, Intermedios, Difíciles** (botones ▲/▼ o escriba el número).
+1. Escriba cuántos ejercicios quiere de cada nivel: **Básicos, Intermedios, Difíciles**.
 2. **Opcional — Personalizar Documento:**
-   - **Título**: escriba el título del documento (ej: "Examen Parcial de Matemáticas").
+   - **Título**: título del documento (ej: "Examen Parcial de Matemáticas").
    - **Autor**: nombre que aparecerá en el encabezado.
-   - **Etiqueta**: elija o escriba la palabra que acompaña a cada imagen (Ejercicio, Enunciado, Problema, Pregunta, Actividad, etc.).
+   - **Etiqueta**: palabra que acompaña cada imagen (Ejercicio, Enunciado, Problema, etc.).
+   - **Espacio extra (cm)**: margen adicional bajo cada ejercicio para que el estudiante responda.
 3. Verifique el total en *"📊 Total de ejercicios"*.
 4. Pulse **"🎲 Generar PDF Aleatorio"**.
-5. Elija **carpeta y nombre** del archivo y pulse *Guardar*.
-6. Al terminar verá *"✅ PDF generado correctamente"* → puede pulsar **"📂 Abrir PDF"** para verlo o cerrar.
+5. Elija carpeta y nombre del archivo → pulse *Guardar*.
+6. Al terminar, pulse **"📂 Abrir PDF"** o cierre el aviso.
 
 **Notas:**
-- Si los campos de título o autor quedan vacíos se usan los valores por defecto.
-- Si el banco no tiene suficientes ejercicios de un nivel, el programa avisa y pregunta si desea continuar con los disponibles.
-- El documento generado usa 2 columnas con la imagen de cada ejercicio numerada (con la etiqueta elegida).
+- Si el banco no tiene suficientes ejercicios de un nivel, el programa avisa y pregunta si continuar con los disponibles.
+- El documento usa 2 columnas con la imagen de cada ejercicio numerada.
+
+---
 
 ## 📚 Sección 2 — Banco de Ejercicios
 
-- **➕ Agregar Ejercicio** (botón superior derecho):
-  1. Escriba el **nombre** del ejercicio.
-  2. Elija la **dificultad** (Básico / Intermedio / Difícil).
-  3. Pulse **"Seleccionar imagen"** y elija un archivo `.png`, `.jpg` o `.jpeg`.
-  4. Pulse **Guardar**.
-
-- **Galeria:** los ejercicios se muestran como tarjetas con miniatura, nombre y dificultad.
-  - **🔍 Buscar** por nombre (campo superior) y **filtrar** por dificultad (menú desplegable).
-  - **Ver:** haga clic en una tarjeta → se abre la imagen ampliada.
-  - **Eliminar:** haga clic en **Eliminar** en la tarjeta → confirme.
-
-## 📊 Sección 3 — Estadísticas
-
-- Muestra el **total** de ejercicios y el conteo por nivel.
-- Indica si cada nivel cumple la **distribución objetivo** (30 Básicos / 20 Intermedios / 10 Difíciles).
-- Barra de distribución actual de todo el banco.
+- **➕ Agregar Ejercicio** — escribe nombre, elige dificultad y selecciona imagen (`.png`, `.jpg`, `.jpeg`).
+- **🖼️ Cargar Varios** — carga masiva: selecciona varias imágenes a la vez.
+- **Galería paginada** (24 tarjetas por página): miniaturas precalculadas para máxima fluidez.
+  - **🔍 Buscar** por nombre y **filtrar** por dificultad (menú desplegable).
+  - **◀ / ▶** controles de página inferiores.
+  - **Ver** — clic en una tarjeta → imagen ampliada.
+  - **Eliminar** — botón en la tarjeta → confirmación.
 
 ---
 
 ## 🔁 Mantener / actualizar la aplicación
 
-- **Guardar sus ejercicios al actualizar el .exe:** el programa nuevo se copia sobre el antiguo, pero **no borre `ejercicios.db`** — ahí viven sus ejercicios.
-- **Reiniciar desde cero:** elimine `ejercicios.db` y la próxima vez que abra la app se crea un banco vacío.
+- **Al actualizar el `.exe`:** copie el nuevo ejecutable sobre el antiguo **sin borrar `ejercicios.db`**.
+- **Reiniciar desde cero:** elimine `ejercicios.db`; la próxima ejecución crea un banco vacío.
 
-## 🗄️ Archivos del proyecto
+---
+
+## 🗄️ Estructura del proyecto
 
 ```
-pruebaproyecto/
-├── dist/                          ← APLICACIÓN PARA EL USUARIO
-│   ├── GeneradorEjercicios.exe    ← ejecutable (no requiere Python)
-│   └── ejercicios.db              ← banco de ejercicios (se crea sola)
-├── src/
-│   ├── main.py                    ← punto de entrada (modo desarrollo)
-│   ├── core/                      ← lógica: base de datos, PDF, modelos
-│   └── gui/                       ← interfaz: ventana, vistas, diálogos
-├── app.py                         ← versión original (Streamlit, obsoleta)
-├── GeneradorEjercicios.spec       ← especificación de PyInstaller
-├── app.ico                        ← icono del ejecutable
+GENPRAC/
+├── dist-avalonia/                     ← ✅ DISTRIBUCIÓN PRINCIPAL (usuario final)
+│   ├── GeneradorEjerciciosAvalonia.exe  ← ejecutable self-contained
+│   └── ejercicios.db                  ← banco de ejercicios
+│
+├── GeneradorEjerciciosAvalonia/       ← código fuente Avalonia (C# / .NET 8) — versión activa
+│   ├── Models/                        ← entidades y constantes
+│   ├── Services/                      ← base de datos, PDF (QuestPDF), helpers de imagen
+│   ├── ViewModels/                    ← lógica MVVM
+│   └── Views/                         ← AXAML: ventanas y controles
+│
+├── src/                               ← código fuente Python (CustomTkinter) — mantenimiento
+│   ├── main.py                        ← punto de entrada Python
+│   ├── core/                          ← modelos, base de datos, generador PDF (fpdf2)
+│   └── gui/                           ← widgets, vistas, diálogos
+│
+├── dist/                              ← distribución Python (referencia, no activa)
+│   └── GeneradorEjercicios.exe
+│
+├── app.py                             ← prototipo original Streamlit (archivado)
+├── ejercicios.db                      ← DB de desarrollo Python (raíz del proyecto)
+├── app.ico                            ← icono de la aplicación
 └── README.md
 ```
 
+> **Nota sobre la base de datos:** Python usa `ejercicios.db` en la raíz del proyecto; Avalonia usa `ejercicios.db` junto a su ejecutable. Para migrar ejercicios de Python a Avalonia copie el archivo:
+> ```
+> copy ejercicios.db dist-avalonia\ejercicios.db
+> ```
+
+---
+
 ## 🛠️ Para desarrolladores
 
-**Ejecutar desde el código fuente:**
+### Versión Avalonia (principal)
+
+```bash
+# Requisitos: .NET 8 SDK
+cd GeneradorEjerciciosAvalonia
+dotnet run
+```
+
+**Recompilar distribución self-contained:**
+
+```bash
+dotnet publish GeneradorEjerciciosAvalonia/GeneradorEjerciciosAvalonia.csproj ^
+  -c Release -r win-x64 --self-contained true ^
+  -p:PublishSingleFile=true -o dist-avalonia
+```
+
+### Versión Python (mantenimiento)
 
 ```bash
 pip install customtkinter fpdf2 pillow
 python src/main.py
 ```
 
-**Recompilar el ejecutable:**
+---
 
-```bash
-pip install pyinstaller
-pyinstaller --onefile --windowed --name GeneradorEjercicios --icon app.ico src/main.py
-```
+## 📊 Comparación de versiones
 
-El .exe resultante queda en `dist/`. Si quiere distribuir con el banco ya poblado, copie también `ejercicios.db` a `dist/`.
+| Característica | Python (`src/`) | Avalonia (principal) |
+|---|---|---|
+| Generación PDF | ✅ fpdf2 + BytesIO | ✅ QuestPDF |
+| Carga masiva | ✅ | ✅ |
+| Miniatura en DB | ✅ columna `miniatura` BLOB | ✅ columna `miniatura` BLOB |
+| Paginación galería | ✅ 12/24/36 por página | ✅ 24 por página |
+| Carga async de thumbs | ✅ ThreadPoolExecutor | ✅ Task.Run + SemaphoreSlim |
+| Buscar + filtrar | ✅ debounced 220 ms | ✅ reactivo (MVVM) |
+| WAL mode + índices | ✅ | ✅ |
+| Paleta Frutiger Aero | ✅ | ✅ |
+| Distribución | PyInstaller (.exe) | .NET self-contained (.exe) |
+| Inicio en frío | ~3-5 s (descompresión) | < 1 s |
 
 ---
 
-Proyecto desarrollado por **Angel Fabiano Salas Zapata**. Conversión a aplicación de escritorio con CustomTkinter y empaquetado con PyInstaller.
+Proyecto desarrollado por **Angel Fabiano Salas Zapata**.

@@ -1,5 +1,4 @@
-import os
-import tempfile
+import io
 from typing import List
 from fpdf import FPDF
 from src.core.database import obtener_ejercicio_por_id
@@ -46,6 +45,7 @@ def generar_pdf_ejercicios(
         documento = ConfiguracionDocumento()
 
     etiqueta = _texto_seguro(documento.etiqueta)
+    espacio_extra_mm = max(0.0, float(documento.espacio_cm) * 10.0)
 
     pdf = PDFEjercicios(documento)
     pdf.add_page()
@@ -67,14 +67,12 @@ def generar_pdf_ejercicios(
         if not imagen_bytes:
             continue
 
-        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
-            tmp.write(imagen_bytes)
-            temp_img_path = tmp.name
+        img_stream = io.BytesIO(imagen_bytes)
 
         x_pos = x_positions[current_col]
 
-        espacio_necesario = img_height + 10
-        if current_y + espacio_necesario > pdf.h - margin_bottom:
+        espacio_celda = img_height + 10 + espacio_extra_mm
+        if current_y + espacio_celda > pdf.h - margin_bottom:
             pdf.add_page()
             current_y = margin_top
             current_col = 0
@@ -84,15 +82,13 @@ def generar_pdf_ejercicios(
         pdf.set_font('Arial', 'B', 10)
         pdf.cell(col_width, 5, f'{etiqueta} {idx + 1}', 0, 0, 'L')
 
-        pdf.image(temp_img_path, x=x_pos, y=current_y + 5, w=col_width)
-
-        os.unlink(temp_img_path)
+        pdf.image(img_stream, x=x_pos, y=current_y + 5, w=col_width)
 
         if current_col == 0:
             current_col = 1
         else:
             current_col = 0
-            current_y += img_height + 10
+            current_y += espacio_celda
 
     pdf.output(filename)
     return filename

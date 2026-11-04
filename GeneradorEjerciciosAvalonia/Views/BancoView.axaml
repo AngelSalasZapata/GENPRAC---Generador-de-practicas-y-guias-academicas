@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:GeneradorEjerciciosAvalonia.ViewModels"
+             xmlns:views="using:GeneradorEjerciciosAvalonia.Views"
+             x:Class="GeneradorEjerciciosAvalonia.Views.BancoView"
+             x:DataType="vm:BancoViewModel"
+             IsVisible="{Binding EsVisible}">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Cabecera -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" Margin="25,25,25,5">
+            <StackPanel Grid.Column="0" Spacing="4">
+                <TextBlock Text="📚 Banco de Ejercicios" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Text="Agregue, revise y elimine ejercicios con sus imágenes"
+                           FontSize="13" Foreground="#7f8c8d"/>
+            </StackPanel>
+            <Button Classes="action-button" Grid.Column="1" Content="🖼️ Cargar Varios" Height="40" Margin="10,0"
+                    Background="#10b981" Foreground="White" VerticalAlignment="Center"
+                    CornerRadius="8" Command="{Binding CargarVariosCommand}"/>
+            <Button Classes="action-button" Grid.Column="2" Content="➕ Agregar Ejercicio" Height="40"
+                    Background="#0284c7" Foreground="White" VerticalAlignment="Center"
+                    CornerRadius="8" Command="{Binding AgregarCommand}"/>
+        </Grid>
+
+        <!-- Filtros -->
+        <Border Grid.Row="1" Background="White" CornerRadius="10" Margin="25,10,25,5" Padding="15,12">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0" PlaceholderText="🔍 Buscar por nombre..." Height="36"
+                         Text="{Binding Busqueda}" Margin="0,0,10,0"/>
+                <ComboBox Grid.Column="1" Width="160" ItemsSource="{Binding Dificultades}"
+                          SelectedItem="{Binding DificultadSeleccionada}"/>
+            </Grid>
+        </Border>
+
+        <!-- Galería -->
+        <Grid Grid.Row="2">
+            <TextBlock Text="No hay ejercicios para mostrar." Foreground="#95a5a6" FontSize="14"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       IsVisible="{Binding Vacio}"/>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Text="{Binding ConteoTexto}" Foreground="#95a5a6" FontSize="12"
+                               Margin="33,8,0,4"/>
+                    <ItemsControl ItemsSource="{Binding Ejercicios}" Margin="25,0,25,10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:EjercicioCardViewModel">
+                                <views:EjercicioCard/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Paginación -->
+        <Border Grid.Row="3" Background="White" CornerRadius="10" Margin="25,4,25,16" Padding="10,8"
+                IsVisible="{Binding !Vacio}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12">
+                <Button Classes="action-button" Content="◀ Anterior" Height="34" Padding="14,0"
+                        Background="#0284c7" Foreground="White" CornerRadius="7"
+                        IsEnabled="{Binding PuedeIrAtras}"
+                        Command="{Binding PaginaAnteriorCommand}"/>
+                <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="#334155"
+                           Text="{Binding ConteoTexto}"/>
+                <Button Classes="action-button" Content="Siguiente ▶" Height="34" Padding="14,0"
+                        Background="#0284c7" Foreground="White" CornerRadius="7"
+                        IsEnabled="{Binding PuedeIrAdelante}"
+                        Command="{Binding PaginaSiguienteCommand}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

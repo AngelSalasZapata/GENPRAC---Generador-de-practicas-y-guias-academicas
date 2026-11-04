@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GeneradorEjerciciosAvalonia.ViewModels"
+        x:Class="GeneradorEjerciciosAvalonia.Views.CargaMasivaWindow"
+        x:DataType="vm:CargaMasivaViewModel"
+        Title="Cargar Varios Ejercicios" Width="820" Height="640"
+        MinWidth="700" MinHeight="480"
+        WindowStartupLocation="CenterOwner" Background="#f4f6f9">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="20,16">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <StackPanel Grid.Column="0" Spacing="4">
+                <TextBlock Text="🖼️ Cargar Varios Ejercicios" FontSize="19" FontWeight="Bold"/>
+                <TextBlock Text="Seleccione varias imágenes y ajuste nombre y dificultad de cada una"
+                           FontSize="12" Foreground="#7f8c8d"/>
+            </StackPanel>
+            <Button Classes="action-button" Grid.Column="1" Content="📂 Seleccionar imágenes" Height="38" VerticalAlignment="Center"
+                    Background="#2e86de" Foreground="White" Click="Seleccionar_Click"/>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
+            <TextBlock Text="Dificultad para todas las imágenes:" VerticalAlignment="Center"/>
+            <ComboBox Width="150" ItemsSource="{Binding Dificultades}" SelectedItem="{Binding DificultadAplicar}"/>
+            <Button Classes="action-button" Content="Aplicar a todas" Width="130"
+                    Background="#0284c7" Foreground="White" Command="{Binding AplicarATodasCommand}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Text="{Binding ConteoTexto}" FontSize="12" Foreground="#7f8c8d" Margin="0,6,0,0"/>
+
+        <Border Grid.Row="3" Background="#ffffff" CornerRadius="8" Margin="0,6,0,10">
+            <Panel>
+                <TextBlock Text="Aún no hay imágenes.&#10;Pulse 'Seleccionar imágenes' para comenzar."
+                           Foreground="#95a5a6" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           TextAlignment="Center" IsVisible="{Binding Vacio}"/>
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Filas}" Margin="6">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:FilaCargaViewModel">
+                                <Border Background="#ffffff" BorderBrush="#e0e0e0" BorderThickness="1"
+                                        CornerRadius="8" Margin="4" Padding="10">
+                                    <Grid ColumnDefinitions="Auto,Auto,*,Auto" RowDefinitions="Auto,Auto">
+                                        <TextBlock Grid.Column="0" Grid.RowSpan="2" Text="{Binding Numero}"
+                                                   FontWeight="Bold" VerticalAlignment="Center"
+                                                   Margin="0,0,10,0" MinWidth="22"/>
+                                        <Border Grid.Column="1" Grid.RowSpan="2" Width="80" Height="80"
+                                                Background="#f0f0f0" CornerRadius="6" Margin="0,0,12,0">
+                                            <Image Source="{Binding Preview}" Stretch="Uniform" Margin="2"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="2" Spacing="6" Margin="0,0,10,0">
+                                            <TextBox Text="{Binding Nombre}" PlaceholderText="Nombre del ejercicio"/>
+                                            <ComboBox Width="150" HorizontalAlignment="Left"
+                                                      ItemsSource="{Binding Dificultades}"
+                                                      SelectedItem="{Binding Dificultad}"/>
+                                        </StackPanel>
+                                        <Button Classes="action-button" Grid.Column="3" Content="✖ Quitar" Width="80"
+                                                VerticalAlignment="Center"
+                                                Background="#e74c3c" Foreground="White"
+                                                Command="{Binding QuitarCommand}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Panel>
+        </Border>
+
+        <Grid Grid.Row="4" ColumnDefinitions="*,*">
+            <Button Classes="action-button" Grid.Column="0" Content="Cancelar" Height="40" Margin="0,0,6,0"
+                    Background="#95a5a6" Foreground="White" Click="Cancelar_Click"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <Button Classes="action-button" Grid.Column="1" Content="Agregar al banco" Height="40" Margin="6,0,0,0"
+                    Background="#16a085" Foreground="White" Click="Agregar_Click"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>

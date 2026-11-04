@@ -1,0 +1,25 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="GeneradorEjerciciosAvalonia.Views.VistaPreviaWindow"
+        Width="640" Height="560"
+        WindowStartupLocation="CenterOwner" Background="#ffffff">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="24">
+        <TextBlock x:Name="NombreText" Grid.Row="0" FontSize="22" FontWeight="Bold"
+                   TextWrapping="Wrap" HorizontalAlignment="Center"/>
+        <Border x:Name="DificultadBadge" Grid.Row="1" CornerRadius="6" Padding="16,6"
+                Margin="0,12,0,20" HorizontalAlignment="Center">
+            <TextBlock x:Name="DificultadText" FontSize="14"/>
+        </Border>
+        <Border Grid.Row="2" Background="#f6f7f9" CornerRadius="8">
+            <Panel>
+                <TextBlock x:Name="ImagenError" Text="❌ No se pudo cargar la imagen"
+                           Foreground="#e74c3c" FontSize="14"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="False"/>
+                <Image x:Name="ImagenPreview" Stretch="Uniform" Margin="8"/>
+            </Panel>
+        </Border>
+        <Button Classes="action-button" Grid.Row="3" Content="✖ Cerrar" Width="140" Height="36" Margin="0,16,0,0"
+                HorizontalAlignment="Center" Background="#e74c3c" Foreground="White"
+                Click="Cerrar_Click"/>
+    </Grid>
+</Window>

@@ -1,9 +1,11 @@
 from src.core.database import (
     init_database,
     agregar_ejercicio,
+    agregar_ejercicios,
     obtener_ejercicios,
     obtener_ejercicios_lista,
     obtener_ejercicio_por_id,
+    obtener_miniatura,
     eliminar_ejercicio,
     obtener_ejercicios_por_dificultad,
     contar_por_dificultad,
@@ -23,9 +25,11 @@ from src.core.models import (
 __all__ = [
     "init_database",
     "agregar_ejercicio",
+    "agregar_ejercicios",
     "obtener_ejercicios",
     "obtener_ejercicios_lista",
     "obtener_ejercicio_por_id",
+    "obtener_miniatura",
     "eliminar_ejercicio",
     "obtener_ejercicios_por_dificultad",
     "contar_por_dificultad",
