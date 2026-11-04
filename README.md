@@ -6,9 +6,10 @@ La aplicación activa está desarrollada con **Avalonia UI, C# y .NET 8**.
 
 ## Uso
 
-1. Descargue el ejecutable desde la sección **Releases** de GitHub.
-2. Ejecute `GeneradorEjerciciosAvalonia.exe` en Windows.
-3. La aplicación no requiere instalar .NET: el ejecutable es autocontenido.
+1. Descargue el archivo ZIP de la versión más reciente desde la sección **Releases** de GitHub.
+2. Extraiga el ZIP completo en una carpeta de Windows.
+3. Ejecute `GeneradorEjerciciosAvalonia.exe` sin moverlo fuera de esa carpeta.
+4. La aplicación no requiere instalar .NET: la distribución es autocontenida.
 
 La base de datos `ejercicios.db` se guarda junto al ejecutable y se crea automáticamente si no existe. Para conservar los ejercicios al actualizar, no elimine ese archivo.
 
@@ -50,7 +51,7 @@ dotnet publish GeneradorEjerciciosAvalonia/GeneradorEjerciciosAvalonia.csproj \
   -p:PublishSingleFile=true -o dist-avalonia
 ```
 
-El ejecutable resultante se publica como archivo adjunto de un **GitHub Release**, no dentro del repositorio, para evitar incorporar binarios pesados al historial Git.
+La carpeta publicada se distribuye como un ZIP adjunto de un **GitHub Release**, no dentro del repositorio, para evitar incorporar binarios pesados al historial Git. Debe conservarse la estructura completa del ZIP porque incluye las bibliotecas nativas necesarias para Avalonia, SQLite y QuestPDF.
 
 ## Licencia de fuentes
 
