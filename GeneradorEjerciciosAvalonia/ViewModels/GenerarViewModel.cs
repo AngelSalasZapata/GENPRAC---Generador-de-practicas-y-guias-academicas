@@ -1,9 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeneradorEjerciciosAvalonia.Models;
+using GeneradorEjerciciosAvalonia.Services;
 
 namespace GeneradorEjerciciosAvalonia.ViewModels;
 
@@ -23,6 +26,14 @@ public partial class GenerarViewModel : ViewModelBase
     [ObservableProperty] private string _etiqueta = ConfiguracionDocumento.EtiquetaPorDefecto;
     [ObservableProperty] private bool _agregarEspacio;
     [ObservableProperty] private string _espacioTexto = "2.0";
+    [ObservableProperty] private bool _imagenesMismoTamano;
+    [ObservableProperty] private string _tamanoImagenTexto = "5.0";
+
+    public ObservableCollection<VistaPreviaEjercicioViewModel> VistaPrevia { get; } = new();
+    public bool HayVistaPrevia => VistaPrevia.Count > 0;
+    public string TextoVistaPrevia => HayVistaPrevia
+        ? "Vista previa · se muestran ejercicios del banco"
+        : "No hay ejercicios con imágenes para mostrar";
 
     public string[] Etiquetas => Constantes.EtiquetasDocumento;
 
@@ -31,11 +42,19 @@ public partial class GenerarViewModel : ViewModelBase
     public GenerarViewModel(MainViewModel main)
     {
         _main = main;
+        ActualizarVistaPrevia();
     }
 
-    partial void OnBasicosChanged(int value) => OnPropertyChanged(nameof(TotalTexto));
-    partial void OnIntermediosChanged(int value) => OnPropertyChanged(nameof(TotalTexto));
-    partial void OnDificilesChanged(int value) => OnPropertyChanged(nameof(TotalTexto));
+    partial void OnBasicosChanged(int value) { OnPropertyChanged(nameof(TotalTexto)); ActualizarVistaPrevia(); }
+    partial void OnIntermediosChanged(int value) { OnPropertyChanged(nameof(TotalTexto)); ActualizarVistaPrevia(); }
+    partial void OnDificilesChanged(int value) { OnPropertyChanged(nameof(TotalTexto)); ActualizarVistaPrevia(); }
+    partial void OnTituloChanged(string value) => ActualizarVistaPrevia();
+    partial void OnAutorChanged(string value) => ActualizarVistaPrevia();
+    partial void OnEtiquetaChanged(string value) => ActualizarVistaPrevia();
+    partial void OnAgregarEspacioChanged(bool value) => ActualizarVistaPrevia();
+    partial void OnEspacioTextoChanged(string value) => ActualizarVistaPrevia();
+    partial void OnImagenesMismoTamanoChanged(bool value) => ActualizarVistaPrevia();
+    partial void OnTamanoImagenTextoChanged(string value) => ActualizarVistaPrevia();
 
     [RelayCommand] private void IncrementarBasicos() => Basicos = Math.Min(Maximo, Basicos + 1);
     [RelayCommand] private void DecrementarBasicos() => Basicos = Math.Max(Minimo, Basicos - 1);
@@ -73,7 +92,55 @@ public partial class GenerarViewModel : ViewModelBase
             Autor = string.IsNullOrWhiteSpace(Autor) ? ConfiguracionDocumento.AutorPorDefecto : Autor.Trim(),
             Etiqueta = string.IsNullOrWhiteSpace(Etiqueta) ? ConfiguracionDocumento.EtiquetaPorDefecto : Etiqueta.Trim(),
             EspacioCm = espacio,
+            ImagenesMismoTamano = ImagenesMismoTamano,
+            TamanoImagenCm = ObtenerTamanoImagen(),
         };
+    }
+
+    private double ObtenerTamanoImagen()
+    {
+        var texto = (TamanoImagenTexto ?? string.Empty).Trim().Replace(',', '.');
+        return double.TryParse(texto, NumberStyles.Float, CultureInfo.InvariantCulture, out var tamano)
+            ? Math.Max(0.1, tamano)
+            : 5.0;
+    }
+
+    private void ActualizarVistaPrevia()
+    {
+        foreach (var item in VistaPrevia) item.Dispose();
+        VistaPrevia.Clear();
+
+        var restantes = 16;
+        var grupos = new[]
+        {
+            ("Básico", Basicos),
+            ("Intermedio", Intermedios),
+            ("Difícil", Dificiles),
+        };
+
+        foreach (var (dificultad, cantidad) in grupos)
+        {
+            if (restantes <= 0 || cantidad <= 0) continue;
+            var ids = _main.Db.ObtenerEjerciciosPorDificultad(dificultad, Math.Min(cantidad, 6));
+            foreach (var id in ids)
+            {
+                if (restantes-- <= 0) break;
+                var imagen = ImageHelper.Decodificar(_main.Db.ObtenerImagen(id), 480);
+                if (imagen is not null)
+                {
+                    VistaPrevia.Add(new VistaPreviaEjercicioViewModel(
+                        imagen, $"{Etiqueta} {VistaPrevia.Count + 1}", ObtenerAltoVistaPrevia()));
+                }
+            }
+        }
+
+        OnPropertyChanged(nameof(HayVistaPrevia));
+        OnPropertyChanged(nameof(TextoVistaPrevia));
+    }
+
+    private double ObtenerAltoVistaPrevia()
+    {
+        return ImagenesMismoTamano ? Math.Clamp(ObtenerTamanoImagen() * 37.8, 45.0, 220.0) : 125.0;
     }
 
     public void GuardarConfiguracion(ConfiguracionPdf config, ConfiguracionDocumento documento)
@@ -87,7 +154,25 @@ public partial class GenerarViewModel : ViewModelBase
         AgregarEspacio = documento.EspacioCm > 0;
         if (documento.EspacioCm > 0)
         {
-            EspacioTexto = documento.EspacioCm.ToString("0.0", CultureInfo.InvariantCulture);
+        EspacioTexto = documento.EspacioCm.ToString("0.0", CultureInfo.InvariantCulture);
         }
+        ImagenesMismoTamano = documento.ImagenesMismoTamano;
+        TamanoImagenTexto = documento.TamanoImagenCm.ToString("0.0", CultureInfo.InvariantCulture);
     }
+}
+
+public sealed class VistaPreviaEjercicioViewModel : IDisposable
+{
+    public Bitmap Imagen { get; }
+    public string Etiqueta { get; }
+    public double AltoImagen { get; }
+
+    public VistaPreviaEjercicioViewModel(Bitmap imagen, string etiqueta, double altoImagen)
+    {
+        Imagen = imagen;
+        Etiqueta = etiqueta;
+        AltoImagen = altoImagen;
+    }
+
+    public void Dispose() => Imagen.Dispose();
 }

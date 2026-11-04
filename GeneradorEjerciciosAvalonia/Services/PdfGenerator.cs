@@ -32,6 +32,7 @@ namespace GeneradorEjerciciosAvalonia.Services
             var autor = TextoSeguro(documento.Autor);
             var etiqueta = TextoSeguro(documento.Etiqueta);
             var espacioExtraMm = (float)(Math.Max(0.0, documento.EspacioCm) * 10.0);
+            var altoImagenMm = (float)(Math.Max(0.1, documento.TamanoImagenCm) * 10.0);
 
             var imagenes = new List<(int Indice, byte[] Datos)>();
             for (var i = 0; i < ejerciciosIds.Count; i++)
@@ -75,8 +76,16 @@ namespace GeneradorEjerciciosAvalonia.Services
                             table.Cell().Padding(5, Unit.Millimetre).PaddingBottom(5 + espacioExtraMm, Unit.Millimetre).Column(cell =>
                             {
                                 cell.Item().Text(etiquetaActual).Bold().FontSize(10);
-                                cell.Item().PaddingTop(3, Unit.Millimetre).Image(datos).FitWidth();
-                            });
+                                 var imagen = cell.Item().PaddingTop(3, Unit.Millimetre);
+                                 if (documento.ImagenesMismoTamano)
+                                 {
+                                     imagen.Height(altoImagenMm, Unit.Millimetre).Image(datos).FitArea();
+                                 }
+                                 else
+                                 {
+                                     imagen.Image(datos).FitWidth();
+                                 }
+                             });
                         }
                     });
 

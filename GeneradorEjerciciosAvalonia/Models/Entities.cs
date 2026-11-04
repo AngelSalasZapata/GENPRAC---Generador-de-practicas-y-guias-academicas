@@ -36,6 +36,8 @@ public sealed class ConfiguracionDocumento
     public string Autor { get; set; } = AutorPorDefecto;
     public string Etiqueta { get; set; } = EtiquetaPorDefecto;
     public double EspacioCm { get; set; } = 0.0;
+    public bool ImagenesMismoTamano { get; set; }
+    public double TamanoImagenCm { get; set; } = 5.0;
 }
 
 public sealed class EstadisticasBanco

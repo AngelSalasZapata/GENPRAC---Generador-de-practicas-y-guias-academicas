@@ -16,6 +16,8 @@ La base de datos `ejercicios.db` se guarda junto al ejecutable y se crea automá
 ## Funcionalidades
 
 - Generación aleatoria de PDFs por nivel de dificultad.
+- Vista previa en tiempo real del documento y de los ejercicios seleccionados.
+- Configuración opcional de un alto uniforme para todas las imágenes, expresado en centímetros.
 - Banco de ejercicios con búsqueda, filtros y paginación.
 - Carga individual y masiva de imágenes.
 - Miniaturas almacenadas en SQLite.
